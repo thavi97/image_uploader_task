@@ -14,10 +14,10 @@
             <p class="mb-4 rounded-md bg-red-50 px-4 py-2 text-sm text-red-700">{{ $message }}</p>
         @enderror
 
-        <form method="POST" action="{{ route('image.upload') }}" enctype="multipart/form-data" class="flex items-center gap-4">
+        <form method="POST" action="{{ route('image.upload') }}" enctype="multipart/form-data" class="flex flex-col gap-4">
             @csrf
 
-            <div class="flex-1">
+            <div>
                 <label for="image" class="block text-sm font-medium text-gray-700 mb-1">Choose an image</label>
                 <input type="file" id="image" name="image" accept="image/*"
                     class="block w-full text-sm text-gray-600 file:mr-4 file:rounded-md file:border-0 file:bg-indigo-50 file:px-4 file:py-2 file:text-sm file:font-medium file:text-indigo-700 hover:file:bg-indigo-100">
@@ -29,7 +29,7 @@
             </label>
 
             <button type="submit"
-                class="rounded-md bg-indigo-600 px-4 py-2 text-sm font-medium text-white hover:bg-indigo-500">
+                class="rounded-md bg-indigo-600 px-4 py-2 text-sm font-medium text-white hover:bg-indigo-500 self-start">
                 Upload
             </button>
         </form>
