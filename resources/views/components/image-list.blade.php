@@ -8,7 +8,8 @@
                     <img src="{{ $image['url'] }}" alt="{{ $image['original_name'] }}" class="h-40 w-full object-cover">
                 </a>
 
-                <form method="POST" action="{{ route('image.destroy', $image['id']) }}" class="absolute top-2 right-2">
+                <form method="POST" action="{{ route('image.destroy', $image['id']) }}" class="absolute top-2 right-2"
+                    data-confirm="Delete this image? This cannot be undone.">
                     @csrf
                     @method('DELETE')
                     <button type="submit"
