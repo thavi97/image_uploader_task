@@ -2,7 +2,7 @@
     <section>
         <h1>Image Uploader</h1>
 
-        <form method="POST" action="#" enctype="multipart/form-data">
+        <form method="POST" action="{{ route('image.upload') }}" enctype="multipart/form-data">
             @csrf
 
             <div>
