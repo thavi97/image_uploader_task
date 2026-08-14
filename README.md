@@ -13,10 +13,15 @@ Before starting the project, I used Excalidraw to draw up a quick system design 
 <br>
 <img src="APL Task System Design.png" alt="System design diagram" width="1000">
 
+## Improvements
 
 I originally wanted to have User authentication, so then the images are linked to the user. But I felt that got out of the scope of the project, so I left it out. If I had more time, then User authentication would be present.
 
 I have also written a couple of automated tests for the Image upload functionality. In a bigger project with more time, there would be more written tests.
+
+Right now, it's not handling the scenario for if the Azure connection is lost after loading the website. So if the user tries to delete an image that's in Azure, when it's not connected, the page will hang.
+
+I would also create some front-end validation as an improvement. So this would prevent the user from only seeing errors after clicking 'Upload'.
 
 ## Packages Used
 
@@ -38,14 +43,14 @@ I have also written a couple of automated tests for the Image upload functionali
    npm install
    ```
 
-3. **Create your environment file**
+3. **Create the environment file**
 
    ```bash
    cp .env.example .env
    php artisan key:generate
    ```
 
-4. **Set your `APP_URL`**
+4. **Set up `APP_URL`**
 
    Make sure `APP_URL` in `.env` matches how you actually access the site locally (e.g. `http://image_uploader_task.test` if served via Laravel Herd, or `http://localhost:8000` if using `php artisan serve`). This is used to build local image URLs correctly.
 
