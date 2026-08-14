@@ -31,7 +31,7 @@
             <ul>
                 @foreach ($images as $image)
                     <li>
-                        <img src="{{ $image }}" alt="Uploaded image" width="200">
+                        <img src="{{ $image['url'] }}" alt="{{ $image['original_name'] }}" width="200">
                     </li>
                 @endforeach
             </ul>

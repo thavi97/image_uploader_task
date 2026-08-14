@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Image;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
@@ -26,10 +27,20 @@ class ImageController extends Controller
 
         $manager = new ImageManager(new Driver());
         $image = $manager->read($file)->scaleDown(1024, 1024);
+        $encoded = $image->encodeByExtension($file->extension());
 
         $filename = 'images/'.Str::random(40).'.'.$file->extension();
 
-        Storage::disk('public')->put($filename, (string) $image->encodeByExtension($file->extension()));
+        Storage::disk('public')->put($filename, (string) $encoded);
+
+        Image::create([
+            'path' => $filename,
+            'original_name' => $file->getClientOriginalName(),
+            'mime_type' => $file->getMimeType(),
+            'size' => $encoded->size(),
+            'width' => $image->width(),
+            'height' => $image->height(),
+        ]);
 
         return back()->with('success', 'You have uploaded an image succesfully!');
     }
