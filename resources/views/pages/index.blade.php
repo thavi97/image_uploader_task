@@ -13,4 +13,20 @@
             <button type="submit">Upload</button>
         </form>
     </section>
+
+    <section>
+        <h2>Uploaded Images</h2>
+
+        @if ($images->isEmpty())
+            <p>No images uploaded yet.</p>
+        @else
+            <ul>
+                @foreach ($images as $image)
+                    <li>
+                        <img src="{{ $image }}" alt="Uploaded image" width="200">
+                    </li>
+                @endforeach
+            </ul>
+        @endif
+    </section>
 </x-app-layout>
