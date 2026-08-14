@@ -84,3 +84,11 @@ I would also create some front-end validation as an improvement. So this would p
    ```bash
    npm run build
    ```
+
+## Viewing the database
+
+This project uses SQLite, so there's no separate DB server to connect to. To inspect the `images` table from the command line:
+
+```bash
+php artisan tinker --execute="echo json_encode(DB::table('images')->get(), JSON_PRETTY_PRINT);"
+```
