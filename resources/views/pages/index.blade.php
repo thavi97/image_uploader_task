@@ -2,6 +2,14 @@
     <section>
         <h1>Image Uploader</h1>
 
+        @if (session('success'))
+            <p>{{ session('success') }}</p>
+        @endif
+
+        @error('image')
+            <p>{{ $message }}</p>
+        @enderror
+
         <form method="POST" action="{{ route('image.upload') }}" enctype="multipart/form-data">
             @csrf
 
