@@ -32,6 +32,12 @@
                 @foreach ($images as $image)
                     <li>
                         <img src="{{ $image['url'] }}" alt="{{ $image['original_name'] }}" width="200">
+
+                        <form method="POST" action="{{ route('image.destroy', $image['id']) }}">
+                            @csrf
+                            @method('DELETE')
+                            <button type="submit">Delete</button>
+                        </form>
                     </li>
                 @endforeach
             </ul>

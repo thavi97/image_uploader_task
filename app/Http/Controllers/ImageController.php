@@ -54,4 +54,13 @@ class ImageController extends Controller
 
         return back()->with('success', 'You have uploaded an image succesfully!');
     }
+
+    public function destroy(Image $image)
+    {
+        Storage::disk($image->disk)->delete($image->path);
+
+        $image->delete();
+
+        return back()->with('success', 'Image deleted successfully!');
+    }
 }
