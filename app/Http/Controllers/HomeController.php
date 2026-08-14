@@ -10,16 +10,24 @@ class HomeController extends Controller
 {
     public function index()
     {
-        $images = Image::latest()->get()
-            ->map(fn (Image $image) => [
-                'id' => $image->id,
-                'url' => $image->disk === 'azure'
-                    ? $this->azureUrl($image->path)
-                    : Storage::disk('public')->url($image->path),
-                'original_name' => $image->original_name,
-            ]);
+        [$azureImages, $localImages] = Image::latest()->get()
+            ->partition(fn (Image $image) => $image->disk === 'azure');
 
-        return view('pages.index', ['images' => $images]);
+        return view('pages.index', [
+            'azureImages' => $this->mapImages($azureImages),
+            'localImages' => $this->mapImages($localImages),
+        ]);
+    }
+
+    private function mapImages($images)
+    {
+        return $images->map(fn (Image $image) => [
+            'id' => $image->id,
+            'url' => $image->disk === 'azure'
+                ? $this->azureUrl($image->path)
+                : Storage::disk('public')->url($image->path),
+            'original_name' => $image->original_name,
+        ]);
     }
 
     private function azureUrl(string $path): string
