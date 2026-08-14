@@ -14,6 +14,7 @@ class ImageController extends Controller
                 'image',
                 'mimes:jpg,jpeg,png',
                 'max:2048', // 2MB
+                'dimensions:max_width=1024,max_height=1024',
             ],
         ]);
 
