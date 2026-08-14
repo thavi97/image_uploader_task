@@ -26,8 +26,6 @@ Right now, it's not handling the scenario for if the Azure connection is lost af
 
 I would also create some front-end validation as an improvement. So this would prevent the user from only seeing errors after clicking 'Upload'.
 
-A nice to have improvement, but I'd create a popup to view the images instead of opening in a new tab.
-
 ## Packages Used
 
 - **[intervention/image](https://image.intervention.io/)** - resizes uploaded images to fit within 1024×1024 before storing them.

@@ -14,6 +14,33 @@ document.querySelectorAll('input[type="checkbox"][data-persist]').forEach((check
     });
 });
 
+const lightbox = document.getElementById('image-lightbox');
+const lightboxImg = document.getElementById('image-lightbox-img');
+
+document.addEventListener('click', (event) => {
+    const trigger = event.target.closest('[data-lightbox]');
+
+    if (trigger) {
+        lightboxImg.src = trigger.dataset.lightbox;
+        lightbox.showModal();
+        return;
+    }
+
+    if (event.target.closest('[data-lightbox-close]')) {
+        lightbox.close();
+    }
+});
+
+lightbox?.addEventListener('click', (event) => {
+    if (event.target === lightbox) {
+        lightbox.close();
+    }
+});
+
+lightbox?.addEventListener('close', () => {
+    lightboxImg.src = '';
+});
+
 document.addEventListener('submit', (event) => {
     const message = event.target.dataset.confirm;
 
