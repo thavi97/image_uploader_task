@@ -11,6 +11,10 @@ use Intervention\Image\ImageManager;
 
 class ImageController extends Controller
 {
+    /**
+     * Validate, resize, and store an uploaded image, then record it in the
+     * 'images' table for audit purposes.
+     */
     public function store(Request $request)
     {
         $request->validate([
@@ -25,6 +29,8 @@ class ImageController extends Controller
 
         $file = $request->file('image');
 
+        // Shrink to fit within 1024x1024, preserving aspect ratio. scaleDown() never
+        // upscales, so smaller images are left as is.
         $manager = new ImageManager(new Driver());
         $image = $manager->read($file)->scaleDown(1024, 1024);
         $encoded = $image->encodeByExtension($file->extension());
@@ -32,6 +38,7 @@ class ImageController extends Controller
         $filename = 'images/'.Str::random(40).'.'.$file->extension();
 
         if ($request->boolean('offline_mode')) {
+            // User explicitly asked to skip Azure and go straight to local storage.
             $disk = 'public';
             Storage::disk('public')->put($filename, (string) $encoded);
         } else {
@@ -40,6 +47,7 @@ class ImageController extends Controller
             try {
                 Storage::disk('azure')->put($filename, (string) $encoded);
             } catch (\Throwable $e) {
+                // Azure unreachable/misconfigured. Fall back to local storage rather than failing the upload.
                 report($e);
 
                 $disk = 'public';
@@ -60,6 +68,12 @@ class ImageController extends Controller
         return back()->with('success', 'You have uploaded an image succesfully!');
     }
 
+    /**
+     * Delete the underlying file from whichever disk it lives on, then soft-delete
+     * the DB record (archived, not removed).
+     * If the file delete fails (e.g. Azure unreachable), the record is left alone
+     * rather than archiving a row whose file was never actually removed.
+     */
     public function destroy(Image $image)
     {
         try {
