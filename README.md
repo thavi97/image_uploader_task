@@ -6,7 +6,7 @@ I chose Laravel because I'm familiar with it and it let me move quickly. Routing
 
 <ul>
     <li>I used intervention to resize any images that are bigger than 1024x1024px.</li>
-    <li>I used **[azure-oss/storage-blob-laravel](https://github.com/Azure-OSS/azure-storage-blob-laravel-php) ** to help me connect to the azure container.</li>
+    <li>I used **[azure-oss/storage-blob-laravel](https://github.com/Azure-OSS/azure-storage-blob-laravel-php)** to help me connect to the azure container.</li>
     <li>I used tailwind for my frontend styling.</li>
     <li>SQLlite was used for the database, for simplicity. No need to spin up a DB server aswell for this task.</li>
     <li>I use aos to fade the images in, as a bit of cleanup.</li>
