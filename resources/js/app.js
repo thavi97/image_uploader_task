@@ -1,4 +1,8 @@
 import './bootstrap';
+import AOS from 'aos';
+import 'aos/dist/aos.css';
+
+AOS.init({ duration: 300, once: true });
 
 document.querySelectorAll('input[type="checkbox"][data-persist]').forEach((checkbox) => {
     const key = `checkbox:${checkbox.dataset.persist}`;

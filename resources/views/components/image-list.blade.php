@@ -3,7 +3,7 @@
 @else
     <ul class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
         @foreach ($images as $image)
-            <li class="group relative overflow-hidden rounded-lg border border-gray-200">
+            <li class="group relative overflow-hidden rounded-lg border border-gray-200" data-aos="fade">
                 <a href="{{ $image['url'] }}" target="_blank" rel="noopener noreferrer">
                     <img src="{{ $image['url'] }}" alt="{{ $image['original_name'] }}" class="h-40 w-full object-cover">
                 </a>
