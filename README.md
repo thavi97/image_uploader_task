@@ -15,6 +15,9 @@ I chose Laravel because I'm familiar with it and it let me move quickly. Routing
 Before starting the project, I used Excalidraw to draw up a quick system design diagram.
 <br>
 <img src="APL Task System Design.png" alt="System design diagram" width="1000">
+<br>
+Essentially it boils down to a User uploading an image, the ImageController then either uploading to the Azure Blob or the Local Storage (depending on what the User selects), and then logging the details of the image in the database.
+
 
 ## Improvements
 
