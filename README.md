@@ -1,59 +1,80 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# Image Uploader
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+A small Laravel app for uploading images, resizing them to fit within 1024×1024, and storing them in Azure Blob Storage (falling back to local disk storage if Azure is unreachable).
 
-## About Laravel
+I chose Laravel because I'm familiar with it and it let me move quickly. Routing, validation, Eloquent, Blade, and the filesystem abstraction (which made swapping between the Azure and local disks straightforward) all came built in.
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+I used intervention to resize any images that are bigger than 1024x1024px.
+I used **[azure-oss/storage-blob-laravel](https://github.com/Azure-OSS/azure-storage-blob-laravel-php)** to help me connect to the azure container.
+I used tailwind for my frontend styling.
+SQLlite was used for the database, for simplicity. No need to spin up a DB server aswell for this task.
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+Before starting the project, I used Excalidraw to draw up a quick system design diagram.
+<br>
+<img src="APL Task System Design.png" alt="System design diagram" width="1000">
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
 
-## Learning Laravel
+I originally wanted to have User authentication, so then the images are linked to the user. But I felt that got out of the scope of the project, so I left it out. If I had more time, then User authentication would be present.
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework. You can also check out [Laravel Learn](https://laravel.com/learn), where you will be guided through building a modern Laravel application.
+I have also written a couple of automated tests for the Image upload functionality. In a bigger project with more time, there would be more written tests.
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+## Packages Used
 
-## Laravel Sponsors
+- **[intervention/image](https://image.intervention.io/)** - resizes uploaded images to fit within 1024×1024 before storing them.
+- **[azure-oss/storage-blob-laravel](https://github.com/Azure-OSS/azure-storage-blob-laravel-php)** - Flysystem/Laravel filesystem driver for Azure Blob Storage, registered as the `azure` disk.
+- **[tailwindcss](https://tailwindcss.com/)** - utility-first CSS for styling the upload form and image lists.
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+## Setup
 
-### Premium Partners
+1. **Install PHP dependencies**
 
-- **[Vehikl](https://vehikl.com)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Redberry](https://redberry.international/laravel-development)**
-- **[Active Logic](https://activelogic.com)**
+   ```bash
+   composer install
+   ```
 
-## Contributing
+2. **Install frontend dependencies**
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+   ```bash
+   npm install
+   ```
 
-## Code of Conduct
+3. **Create your environment file**
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+   ```bash
+   cp .env.example .env
+   php artisan key:generate
+   ```
 
-## Security Vulnerabilities
+4. **Set your `APP_URL`**
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+   Make sure `APP_URL` in `.env` matches how you actually access the site locally (e.g. `http://image_uploader_task.test` if served via Laravel Herd, or `http://localhost:8000` if using `php artisan serve`). This is used to build local image URLs correctly.
 
-## License
+5. **Create the database**
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+   This project uses SQLite by default.
+
+   ```bash
+   touch database/database.sqlite
+   php artisan migrate
+   ```
+
+6. **Configure Azure Blob Storage**
+
+   Add your connection string and container name to `.env`:
+
+   ```
+   AZURE_STORAGE_CONNECTION_STRING="<your connection string>"
+   AZURE_STORAGE_CONTAINER=<your container name>
+   ```
+
+   If this isn't configured (or the connection fails), uploads automatically fall back to local storage under `storage/app/public/images`. In that case, make sure the storage symlink exists:
+
+   ```bash
+   php artisan storage:link
+   ```
+
+7. **Build frontend assets**
+
+   ```bash
+   npm run build
+   ```
