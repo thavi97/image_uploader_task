@@ -4,11 +4,11 @@ A small Laravel app for uploading images, resizing them to fit within 1024×1024
 
 I chose Laravel because I'm familiar with it and it let me move quickly. Routing, validation, Eloquent, Blade, and the filesystem abstraction (which made swapping between the Azure and local disks straightforward) all came built in.
 
-I used intervention to resize any images that are bigger than 1024x1024px.
-I used **[azure-oss/storage-blob-laravel](https://github.com/Azure-OSS/azure-storage-blob-laravel-php)** to help me connect to the azure container.
-I used tailwind for my frontend styling.
-SQLlite was used for the database, for simplicity. No need to spin up a DB server aswell for this task.
-I use aos to fade the images in, as a bit of cleanup.
+I used intervention to resize any images that are bigger than 1024x1024px.<br>
+I used **[azure-oss/storage-blob-laravel](https://github.com/Azure-OSS/azure-storage-blob-laravel-php)** to help me connect to the azure container.<br>
+I used tailwind for my frontend styling.<br>
+SQLlite was used for the database, for simplicity. No need to spin up a DB server aswell for this task.<br>
+I use aos to fade the images in, as a bit of cleanup.<br>
 
 Before starting the project, I used Excalidraw to draw up a quick system design diagram.
 <br>
