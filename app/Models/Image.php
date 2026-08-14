@@ -8,6 +8,7 @@ class Image extends Model
 {
     protected $fillable = [
         'path',
+        'disk',
         'original_name',
         'mime_type',
         'size',

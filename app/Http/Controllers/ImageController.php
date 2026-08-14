@@ -31,10 +31,20 @@ class ImageController extends Controller
 
         $filename = 'images/'.Str::random(40).'.'.$file->extension();
 
-        Storage::disk('public')->put($filename, (string) $encoded);
+        $disk = 'azure';
+
+        try {
+            Storage::disk('azure')->put($filename, (string) $encoded);
+        } catch (\Throwable $e) {
+            report($e);
+
+            $disk = 'public';
+            Storage::disk('public')->put($filename, (string) $encoded);
+        }
 
         Image::create([
             'path' => $filename,
+            'disk' => $disk,
             'original_name' => $file->getClientOriginalName(),
             'mime_type' => $file->getMimeType(),
             'size' => $encoded->size(),

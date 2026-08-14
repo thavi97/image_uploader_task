@@ -12,7 +12,9 @@ class HomeController extends Controller
     {
         $images = Image::latest()->get()
             ->map(fn (Image $image) => [
-                'url' => Storage::disk('public')->url($image->path),
+                'url' => $image->disk === 'azure'
+                    ? Storage::disk('azure')->temporaryUrl($image->path, now()->addMinutes(30))
+                    : Storage::disk('public')->url($image->path),
                 'original_name' => $image->original_name,
             ]);
 
