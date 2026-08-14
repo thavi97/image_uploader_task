@@ -7,7 +7,7 @@
 @else
     <ul class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
         @foreach ($images as $image)
-            {{-- data-aos="fade" triggers the quick fade-in animation from resources/js/app.js --}}
+            {{-- data-aos="fade" triggers the quick fade-in animation --}}
             <li class="group relative overflow-hidden rounded-lg border border-gray-200" data-aos="fade">
                 {{-- Opens the shared lightbox popup (defined in the app layout) instead of navigating away --}}
                 <button type="button" data-lightbox="{{ $image['url'] }}" class="block w-full cursor-pointer">
