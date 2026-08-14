@@ -51,6 +51,8 @@ return [
             'driver' => 'azure-storage-blob',
             'connection_string' => env('AZURE_STORAGE_CONNECTION_STRING'),
             'container' => env('AZURE_STORAGE_CONTAINER'),
+            'connect_timeout' => 5,
+            'timeout' => 5,
         ],
 
         's3' => [

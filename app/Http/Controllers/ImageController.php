@@ -31,15 +31,20 @@ class ImageController extends Controller
 
         $filename = 'images/'.Str::random(40).'.'.$file->extension();
 
-        $disk = 'azure';
-
-        try {
-            Storage::disk('azure')->put($filename, (string) $encoded);
-        } catch (\Throwable $e) {
-            report($e);
-
+        if ($request->boolean('offline_mode')) {
             $disk = 'public';
             Storage::disk('public')->put($filename, (string) $encoded);
+        } else {
+            $disk = 'azure';
+
+            try {
+                Storage::disk('azure')->put($filename, (string) $encoded);
+            } catch (\Throwable $e) {
+                report($e);
+
+                $disk = 'public';
+                Storage::disk('public')->put($filename, (string) $encoded);
+            }
         }
 
         Image::create([
@@ -57,7 +62,13 @@ class ImageController extends Controller
 
     public function destroy(Image $image)
     {
-        Storage::disk($image->disk)->delete($image->path);
+        try {
+            Storage::disk($image->disk)->delete($image->path);
+        } catch (\Throwable $e) {
+            report($e);
+
+            return back()->with('error', 'Unable to delete the image right now. Please try again.');
+        }
 
         $image->delete();
 
